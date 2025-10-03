@@ -48,9 +48,16 @@ const Index = () => {
 
     if (answer === correctAnswer) {
       setIsVerified(true);
-      toast.success("Correto! Você pode falar conosco agora 🎉", {
+      toast.success("Correto! Redirecionando para o WhatsApp... 🎉", {
         icon: <CheckCircle2 className="h-5 w-5" />,
       });
+      
+      // Redireciona automaticamente após 1 segundo
+      setTimeout(() => {
+        const phoneNumber = "5511999999999";
+        const message = encodeURIComponent("Olá! Resolvi o captcha e gostaria de conversar.");
+        window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank");
+      }, 1000);
     } else {
       setAttempts(prev => prev + 1);
       toast.error("Resposta incorreta. Tente novamente!");
@@ -65,13 +72,6 @@ const Index = () => {
     }
   };
 
-  const handleWhatsAppClick = () => {
-    // Substitua o número abaixo pelo seu número do WhatsApp (com DDI e DDD)
-    // Formato: 55 (Brasil) + DDD + Número
-    const phoneNumber = "5511999999999"; // Exemplo: 55 11 99999-9999
-    const message = encodeURIComponent("Olá! Resolvi o captcha e gostaria de conversar.");
-    window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank");
-  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-secondary/30 to-accent/20 p-4">
@@ -118,24 +118,15 @@ const Index = () => {
             </form>
           ) : (
             <div className="space-y-6 animate-in fade-in-0 zoom-in-95 duration-700">
-              <div className="bg-primary/10 border-2 border-primary/30 rounded-lg p-6 text-center">
-                <CheckCircle2 className="h-16 w-16 text-primary mx-auto mb-3" />
-                <p className="text-lg font-semibold text-foreground">
+              <div className="bg-primary/10 border-2 border-primary/30 rounded-lg p-8 text-center">
+                <CheckCircle2 className="h-20 w-20 text-primary mx-auto mb-4 animate-pulse" />
+                <p className="text-xl font-bold text-foreground mb-2">
                   Verificação concluída!
                 </p>
-                <p className="text-sm text-muted-foreground mt-2">
-                  Agora você pode falar com a gente
+                <p className="text-base text-muted-foreground">
+                  Redirecionando para o WhatsApp...
                 </p>
               </div>
-
-              <Button
-                onClick={handleWhatsAppClick}
-                className="w-full h-14 text-lg font-semibold gap-2 bg-primary hover:bg-primary/90"
-                size="lg"
-              >
-                <MessageCircle className="h-5 w-5" />
-                Fale com a gente no WhatsApp
-              </Button>
             </div>
           )}
         </CardContent>
